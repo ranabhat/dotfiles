@@ -1,0 +1,8 @@
+# yazi.toml
+[mgr]
+show_hidden = false
+
+[opener]
+edit = [
+  { run = 'nv "$@"', desc = "Open in Neovim", block = true, for = "unix" },
+]
