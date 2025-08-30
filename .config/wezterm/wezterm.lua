@@ -19,6 +19,7 @@ end
 -- This will hold the configuration.
 local config = wezterm.config_builder()
 -- This is where you actually apply your config choices.
+
 config = {
 	automatically_reload_config = true,
 	enable_tab_bar = false,
@@ -88,6 +89,30 @@ config = {
 			mods = "LEADER|CTRL",
 			action = wezterm.action.SendKey({ key = "a", mods = "CTRL" }),
 		},
+		{
+			key = '"',
+			mods = "LEADER",
+			action = wezterm.action.SplitHorizontal({ domain = "CurrentPaneDomain" }),
+		},
+		-- CTRL+SHIFT+Space, followed by 'a' will put us in activate-pane
+		-- mode until we press some other key or until 1 second (1000ms)
+		-- of time elapses
+		{
+			key = "r",
+			mods = "LEADER",
+			action = wezterm.action.ActivateKeyTable({
+				name = "resize_pane",
+				one_shot = false,
+			}),
+		},
+		{
+			key = "a",
+			mods = "LEADER",
+			action = wezterm.action.ActivateKeyTable({
+				name = "activate_pane",
+				timeout_milliseconds = 1000,
+			}),
+		},
 		move_pane("j", "Down"),
 		move_pane("k", "Up"),
 		move_pane("h", "Left"),
@@ -98,6 +123,21 @@ config = {
 		{ key = "F4", mods = "ALT", action = wezterm.action.ActivatePaneByIndex(3) },
 	},
 
+	key_tables = {
+		resize_pane = {
+			{ key = "h", action = wezterm.action.AdjustPaneSize({ "Left", 1 }) },
+			{ key = "l", action = wezterm.action.AdjustPaneSize({ "Right", 1 }) },
+			{ key = "k", action = wezterm.action.AdjustPaneSize({ "Up", 1 }) },
+			{ key = "j", action = wezterm.action.AdjustPaneSize({ "Down", 1 }) },
+			{ key = "Escape", action = "PopKeyTable" },
+		},
+		activate_pane = {
+			{ key = "h", action = wezterm.action.ActivatePaneDirection("Left") },
+			{ key = "l", action = wezterm.action.ActivatePaneDirection("Right") },
+			{ key = "k", action = wezterm.action.ActivatePaneDirection("Up") },
+			{ key = "j", action = wezterm.action.ActivatePaneDirection("Down") },
+		},
+	},
 	-- Custom Commands
 	wezterm.on("augment-command-palette", function()
 		return commands
