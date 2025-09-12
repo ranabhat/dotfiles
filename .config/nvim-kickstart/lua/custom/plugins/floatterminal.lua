@@ -1,48 +1,48 @@
-local state = {
-  buf = -1,
-  win = -1,
-}
-
-local function toggle_floating_terminal(opts)
-  opts = opts or {}
-  local columns = vim.o.columns
-  local lines = vim.o.lines
-
-  -- If already open, just close
-  if vim.api.nvim_win_is_valid(state.win) then
-    vim.api.nvim_win_hide(state.win)
-    return
-  end
-
-  -- Default size = 80% of screen
-  local width = opts.width or math.floor(columns * 0.8)
-  local height = opts.height or math.floor(lines * 0.8)
-
-  -- Center the floating window
-  local row = math.floor((lines - height) / 2)
-  local col = math.floor((columns - width) / 2)
-
-  -- Reuse buffer if valid, else create new one
-  if not (type(state.buf) == 'number' and vim.api.nvim_buf_is_valid(state.buf)) then
-    state.buf = vim.api.nvim_create_buf(false, true)
-  end
-
-  state.win = vim.api.nvim_open_win(state.buf, true, {
-    relative = 'editor',
-    width = width,
-    height = height,
-    row = row,
-    col = col,
-    style = 'minimal',
-    border = 'rounded',
-  })
-
-  -- Start terminal if buffer is fresh
-  if vim.bo[state.buf].buftype ~= 'terminal' then
-    vim.cmd.terminal()
-  end
-  vim.cmd.startinsert()
-end
-
--- 🔑 Single keybinding to toggle (defaults to 80% size)
-vim.keymap.set({ 'n', 't' }, '<leader>tt', toggle_floating_terminal, { desc = 'Toggle floating terminal' })
+-- local state = {
+--   buf = -1,
+--   win = -1,
+-- }
+--
+-- local function toggle_floating_terminal(opts)
+--   opts = opts or {}
+--   local columns = vim.o.columns
+--   local lines = vim.o.lines
+--
+--   -- If already open, just close
+--   if vim.api.nvim_win_is_valid(state.win) then
+--     vim.api.nvim_win_hide(state.win)
+--     return
+--   end
+--
+--   -- Default size = 80% of screen
+--   local width = opts.width or math.floor(columns * 0.8)
+--   local height = opts.height or math.floor(lines * 0.8)
+--
+--   -- Center the floating window
+--   local row = math.floor((lines - height) / 2)
+--   local col = math.floor((columns - width) / 2)
+--
+--   -- Reuse buffer if valid, else create new one
+--   if not (type(state.buf) == 'number' and vim.api.nvim_buf_is_valid(state.buf)) then
+--     state.buf = vim.api.nvim_create_buf(false, true)
+--   end
+--
+--   state.win = vim.api.nvim_open_win(state.buf, true, {
+--     relative = 'editor',
+--     width = width,
+--     height = height,
+--     row = row,
+--     col = col,
+--     style = 'minimal',
+--     border = 'rounded',
+--   })
+--
+--   -- Start terminal if buffer is fresh
+--   if vim.bo[state.buf].buftype ~= 'terminal' then
+--     vim.cmd.terminal()
+--   end
+--   vim.cmd.startinsert()
+-- end
+--
+-- -- 🔑 Single keybinding to toggle (defaults to 80% size)
+-- vim.keymap.set({ 'n', 't' }, '<leader>tt', toggle_floating_terminal, { desc = 'Toggle floating terminal' })

@@ -220,8 +220,9 @@ alt-tab = 'workspace-back-and-forth'
 alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
 alt-shift-f = 'fullscreen'
 # See: https://nikitabobko.github.io/AeroSpace/commands#mode
-alt-shift-9 = 'mode service'
-
+alt-shift-m = 'mode service'
+cmd-h = [] # Disable "hide application"
+cmd-alt-h = [] # Disable "hide others"
 # 'service' binding mode declaration.
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
 [mode.service.binding]

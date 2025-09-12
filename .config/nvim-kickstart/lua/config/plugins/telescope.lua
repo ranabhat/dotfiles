@@ -96,6 +96,9 @@ return {
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
 
+      vim.keymap.set('n', '<leader>se', builtin.registers, { desc = '[S]earch R[E]gisters' })
+      vim.keymap.set('n', '<leader>sq', builtin.quickfix, { desc = '[S]earch [Q]uickfix list' })
+
       -- Slightly advanced example of overriding default behavior and theme
       vim.keymap.set('n', '<leader>/', function()
         -- You can pass additional configuration to Telescope to change the theme, layout, etc.
@@ -114,10 +117,18 @@ return {
         }
       end, { desc = '[S]earch [/] in Open Files' })
 
+      vim.keymap.set('n', '<leader>sl', function()
+        builtin.find_files {
+          -- prompt_title = 'Live Grep in Open Files',
+          cwd = vim.fs.joinpath(vim.fn.stdpath 'data', 'lazy'),
+        }
+      end, { desc = '[S]earch [L]azy files' })
       -- Shortcut for searching your Neovim configuration files
       vim.keymap.set('n', '<leader>sn', function()
         builtin.find_files { cwd = vim.fn.stdpath 'config' }
       end, { desc = '[S]earch [N]eovim files' })
+
+      require('config.telescope.multigrep').setup()
     end,
   },
 }
