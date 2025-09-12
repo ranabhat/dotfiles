@@ -168,3 +168,4 @@ vim.o.scrolloff = 10
 vim.o.confirm = true
 vim.o.foldenable = false
 vim.o.foldmethod = 'manual'
+vim.o.termguicolors = true

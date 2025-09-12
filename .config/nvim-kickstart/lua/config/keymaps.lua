@@ -42,3 +42,9 @@ vim.keymap.set('n', '<c-w>,', '<c-w>5<')
 vim.keymap.set('n', '<c-w>.', '<c-w>5>')
 -- Note Remap jh to <Esc> in insert mode
 vim.keymap.set('i', 'jh', '<Esc>', { noremap = true })
+
+-- THis mapping to open oil plugin
+vim.keymap.set('n', '<C-o>', function()
+  vim.cmd 'vsplit | wincmd l'
+  require('oil').open()
+end)
