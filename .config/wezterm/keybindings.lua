@@ -59,6 +59,11 @@ function M.apply(config)
 			mods = "LEADER",
 			action = wezterm.action.CloseCurrentPane({ confirm = false }),
 		},
+		{
+			key = "c",
+			mods = "LEADER",
+			action = wezterm.action.SendString("clear\n"),
+		},
 		-- spawm zabbix command line in new tab
 		{
 			key = "z",
