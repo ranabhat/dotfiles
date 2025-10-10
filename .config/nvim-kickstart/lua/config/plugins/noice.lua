@@ -1,6 +1,7 @@
 -- Configuring noice.nvim with provided settings
 return {
   'folke/noice.nvim',
+  enabled = false,
   event = 'VeryLazy', -- Lazy-load for performance
   dependencies = {
     'MunifTanjim/nui.nvim', -- Required for UI components

@@ -1,9 +1,54 @@
 return {
+  {
+    'onsails/lspkind.nvim',
+    lazy = true,
+    -- load it when cmp is loaded, or on InsertEnter
+    event = 'InsertEnter',
+    config = function()
+      require('lspkind').init {
+        -- You can choose how the icons + text show
+        mode = 'symbol_text', -- options: "symbol", "text", "symbol_text", "text_symbol"
+        preset = 'default', -- or "codicons"
+        symbol_map = {
+          Text = '󰉿',
+          Method = '󰆧',
+          Function = '󰊕',
+          Constructor = '',
+          Field = '󰜢',
+          Variable = '󰀫',
+          Class = '󰠱',
+          Interface = '',
+          Module = '',
+          Property = '',
+          Unit = '',
+          Value = '',
+          Enum = '',
+          Keyword = '',
+          Snippet = '﬌',
+          Color = '',
+          File = '',
+          Reference = '',
+          Folder = '',
+          EnumMember = '',
+          Constant = '',
+          Struct = '',
+          Event = '',
+          Operator = 'ﬦ',
+          TypeParameter = '',
+        },
+        -- optionally override formatting, etc.
+        -- you can also set `maxwidth`, `ellipsis_char`, etc.
+      }
+    end,
+  },
   { -- Autocompletion
     'saghen/blink.cmp',
+    -- event = 'LspAttach',
     event = 'VimEnter',
     version = '1.*',
     dependencies = {
+      { 'nvim-tree/nvim-web-devicons', opts = {} },
+
       -- Snippet Engine
       {
         'L3MON4D3/LuaSnip',
@@ -30,6 +75,7 @@ return {
         },
         opts = {},
       },
+      'onsails/lspkind.nvim',
       'folke/lazydev.nvim',
       'echasnovski/mini.nvim',
       'xzbdmw/colorful-menu.nvim',
@@ -68,8 +114,8 @@ return {
       appearance = {
         -- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
         -- Adjusts spacing to ensure icons are aligned
-        -- use_nvim_cmp_as_default = true,
-        nerd_font_variant = 'mono',
+        use_nvim_cmp_as_default = true,
+        nerd_font_variant = 'normal',
       },
 
       completion = {
@@ -100,11 +146,93 @@ return {
         --     },
         --   },
         -- },
+        -- menu = {
+        --   border = 'rounded',
+        --   trigger = {
+        --     preselect = true,
+        --     show_on_trigger_character = true,
+        --   },
+        --   draw = {
+        --     components = {
+        --       kind_icon = {
+        --         text = function(ctx)
+        --           if ctx.source_name ~= 'Path' then
+        --             return require('lspkind').symbolic(ctx.kind, { mode = 'symbol' }) .. ctx.icon_gap
+        --           end
+        --
+        --           local is_unknown_type = vim.tbl_contains({ 'link', 'socket', 'fifo', 'char', 'block', 'unknown' }, ctx.item.data.type)
+        --           local mini_icon, _ = require('mini.icons').get(is_unknown_type and 'os' or ctx.item.data.type, is_unknown_type and '' or ctx.label)
+        --
+        --           return (mini_icon or ctx.kind_icon) .. ctx.icon_gap
+        --         end,
+        --
+        --         highlight = function(ctx)
+        --           if ctx.source_name ~= 'Path' then
+        --             return ctx.kind_hl
+        --           end
+        --
+        --           local is_unknown_type = vim.tbl_contains({ 'link', 'socket', 'fifo', 'char', 'block', 'unknown' }, ctx.item.data.type)
+        --           local mini_icon, mini_hl = require('mini.icons').get(is_unknown_type and 'os' or ctx.item.data.type, is_unknown_type and '' or ctx.label)
+        --           return mini_icon ~= nil and mini_hl or ctx.kind_hl
+        --         end,
+        --       },
+        --     },
+        --   },
+        -- },
+        -- draw = {
+        --   components = {
+        --     kind_icon = {
+        --       text = function(ctx)
+        --         local icon = ctx.kind_icon
+        --         if vim.tbl_contains({ 'Path' }, ctx.source_name) then
+        --           local dev_icon, _ = require('nvim-web-devicons').get_icon(ctx.label)
+        --           if dev_icon then
+        --             icon = dev_icon
+        --           end
+        --         else
+        --           icon = require('lspkind').symbolic(ctx.kind, {
+        --             mode = 'symbol',
+        --           })
+        --         end
+        --
+        --         return icon .. ctx.icon_gap
+        --       end,
+        --
+        --       -- Optionally, use the highlight groups from nvim-web-devicons
+        --       -- You can also add the same function for `kind.highlight` if you want to
+        --       -- keep the highlight groups in sync with the icons.
+        --       highlight = function(ctx)
+        --         local hl = ctx.kind_hl
+        --         if vim.tbl_contains({ 'Path' }, ctx.source_name) then
+        --           local dev_icon, dev_hl = require('nvim-web-devicons').get_icon(ctx.label)
+        --           if dev_icon then
+        --             hl = dev_hl
+        --           end
+        --         end
+        --         return hl
+        --       end,
+        --     },
+        --   },
+        -- },
+        -- },
         menu = {
+
+          border = 'rounded',
+          trigger = {
+            preselect = true,
+            show_on_trigger_character = true,
+          },
           draw = {
             -- We don't need label_description now because label and label_description are already
             -- combined together in label by colorful-menu.nvim.
-            columns = { { 'kind_icon', 'kind' }, { 'label', gap = 1 } },
+            -- columns = { { 'kind_icon', 'kind' }, { 'label', 'label_description', gap = 1 } },
+
+            columns = {
+              { 'kind_icon', gap = 1 },
+
+              { 'label', 'label_description', gap = 1 },
+              { 'kind', width = { max = 12 }, align = 'right' },
+            },
             components = {
               kind_icon = {
                 text = function(ctx)
@@ -151,7 +279,11 @@ return {
             },
           },
         },
-        documentation = { auto_show = true, auto_show_delay_ms = 500 },
+        documentation = {
+          auto_show = true,
+          auto_show_delay_ms = 500,
+          window = { border = 'single' },
+        },
         -- ghost_text = { enabled = true, hl_group = 'Comment' },
       },
 
@@ -174,7 +306,13 @@ return {
       -- fuzzy = { implementation = 'lua' },
       fuzzy = { implementation = 'prefer_rust_with_warning' },
       -- Shows a signature help window while you type arguments for a function
-      signature = { enabled = true },
+      signature = {
+        enabled = true,
+        window = {
+          show_documentation = true,
+          border = 'single',
+        },
+      },
     },
   },
 }

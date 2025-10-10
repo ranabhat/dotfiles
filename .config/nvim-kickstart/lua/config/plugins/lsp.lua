@@ -30,6 +30,15 @@ return {
       'saghen/blink.cmp',
     },
     config = function()
+      local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
+      function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
+        opts = opts or {}
+        opts.border = 'rounded'
+        opts.max_width = 600
+        opts.max_height = 30
+        opts.focusable = false
+        return orig_util_open_floating_preview(contents, syntax, opts, ...)
+      end
       -- Brief aside: **What is LSP?**
       --
       -- LSP is an initialism you've probably heard, but might not understand what it is.
@@ -162,6 +171,17 @@ return {
           end
         end,
       })
+      -- Extra autocmd: Disable hover from Ruff (so Pyright handles it)
+      vim.api.nvim_create_autocmd('LspAttach', {
+        group = vim.api.nvim_create_augroup('lsp_attach_disable_ruff_hover', { clear = true }),
+        callback = function(args)
+          local client = vim.lsp.get_client_by_id(args.data.client_id)
+          if client and client.name == 'ruff' then
+            client.server_capabilities.hoverProvider = false
+          end
+        end,
+        desc = 'LSP: Disable hover capability from Ruff',
+      })
 
       -- Diagnostic Config
       -- See :help vim.diagnostic.Opts
@@ -211,7 +231,62 @@ return {
       local servers = {
         -- clangd = {},
         -- gopls = {},
+        -- pylyzer = {},
         -- pyright = {},
+        -- pylsp = {
+        --   -- capabilities = capabilities,
+        --   settings = {
+        --     pylsp = {
+        --       plugins = {
+        --         pyflakes = { enabled = false },
+        --         pycodestyle = { enabled = false },
+        --         yapf = { enabled = false },
+        --         autopep8 = { enabled = false },
+        --         mccabe = { enabled = false },
+        --         -- pylint = { enabled = false },
+        --         pylsp_mypy = { enabled = false },
+        --         pylsp_black = { enabled = false },
+        --         pylsp_isort = { enabled = false },
+        --         rope_autoimport = { enabled = false },
+        --         rope_completion = { enabled = false },
+        --       },
+        --     },
+        --   },
+        -- },
+        -- basedpyright = {
+        --   settings = {
+        --     basedpyright = {
+        --       disableOrganizeImports = true,
+        --       analysis = {
+        --         ignore = { '*' },
+        --         useLibraryCodeForTypes = true,
+        --       },
+        --     },
+        --   },
+        -- },
+        pyright = {
+          settings = {
+            pyright = {
+              -- Using Ruff's import organizer
+              disableOrganizeImports = true,
+            },
+            python = {
+              analysis = {
+                -- Ignore all files for analysis to exclusively use Ruff for linting
+                ignore = { '*' },
+                useLibraryCodeForTypes = true,
+              },
+            },
+          },
+        },
+        ruff = {
+          init_options = {
+            settings = {
+              -- Server settings should go here
+              logLevel = 'debug',
+            },
+          },
+        },
         -- rust_analyzer = {
         --   capabilities = capabilities,
         --   cmd = {
