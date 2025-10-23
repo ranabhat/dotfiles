@@ -44,7 +44,7 @@ vim.keymap.set('n', '<c-w>.', '<c-w>5>')
 vim.keymap.set('i', 'jh', '<Esc>', { noremap = true })
 
 -- THis mapping to open oil plugin
-vim.keymap.set('n', '<C-o>', function()
+vim.keymap.set('n', '<leader>o', function()
   vim.cmd 'vsplit | wincmd l'
   require('oil').open()
 end)
