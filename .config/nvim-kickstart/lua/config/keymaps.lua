@@ -48,3 +48,8 @@ vim.keymap.set('n', '<leader>o', function()
   vim.cmd 'vsplit | wincmd l'
   require('oil').open()
 end)
+
+vim.keymap.set('n', '<leader>v', function()
+  vim.cmd 'vsplit | terminal'
+  vim.cmd 'startinsert'
+end, { desc = 'Open terminal in vsplit (insert mode)' })
