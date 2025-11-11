@@ -37,12 +37,6 @@ function M.apply(config)
 			action = wezterm.action.SendKey({ key = "a", mods = "CTRL" }),
 		},
 		{
-			key = '"',
-			mods = "LEADER",
-			action = wezterm.action.SplitHorizontal({ domain = "CurrentPaneDomain" }),
-		},
-
-		{
 			key = "Z",
 			mods = "LEADER",
 			action = wezterm.action.TogglePaneZoomState,
@@ -64,17 +58,44 @@ function M.apply(config)
 			mods = "LEADER",
 			action = wezterm.action.SendString("clear\n"),
 		},
+
 		-- spawm zabbix command line in new tab
 		{
-			key = "z",
+			key = "p",
 			mods = "LEADER",
-			action = wezterm.action.SpawnCommandInNewTab({
-				args = { "/opt/homebrew/bin/zabbix-cli", "--config", home .. "/.zabbix-cli.toml" },
+			action = wezterm.action.PaneSelect({
+				alphabet = "1234567890",
 			}),
 		},
+
+		{
+			key = "s",
+			mods = "LEADER",
+			action = wezterm.action.PaneSelect({
+				mode = "SwapWithActive",
+			}),
+		},
+		-- spawm zabbix command line in new tab
+		-- {
+		-- 	key = "z",
+		-- 	mods = "LEADER",
+		-- 	action = wezterm.action.SpawnCommandInNewTab({
+		-- 		args = { "/opt/homebrew/bin/zabbix-cli", "--config", home .. "/.zabbix-cli.toml" },
+		-- 	}),
+		-- },
 		-- CTRL+SHIFT+Space, followed by 'a' will put us in activate-pane
 		-- mode until we press some other key or until 1 second (1000ms)
 		-- of time elapses
+
+		-- scroll page
+		{
+			key = "m",
+			mods = "LEADER",
+			action = wezterm.action.ActivateKeyTable({
+				name = "scroll",
+				one_shot = false,
+			}),
+		},
 		{
 			key = "r",
 			mods = "LEADER",
@@ -114,6 +135,14 @@ function M.apply(config)
 			{ key = "l", action = wezterm.action.ActivatePaneDirection("Right") },
 			{ key = "k", action = wezterm.action.ActivatePaneDirection("Up") },
 			{ key = "j", action = wezterm.action.ActivatePaneDirection("Down") },
+		},
+
+		scroll = {
+			{ key = "k", action = wezterm.action.ScrollByPage(-1) },
+			{ key = "j", action = wezterm.action.ScrollByPage(1) },
+			{ key = "K", action = wezterm.action.ScrollByLine(-1) },
+			{ key = "J", action = wezterm.action.ScrollByLine(1) },
+			{ key = "Escape", action = "PopKeyTable" },
 		},
 	}
 end
