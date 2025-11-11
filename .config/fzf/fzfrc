@@ -1,16 +1,27 @@
 # Source your fzf config in ~/.zshrc
 # Add the following line to ~/.zshrc after source <(fzf --zsh)
 # [ -f ~/.config/fzf/fzfrc ] && source ~/.config/fzf/fzfrc
+# Use ~~ as the trigger sequence instead of the default **
+export FZF_COMPLETION_TRIGGER='~~'
 export FZF_DEFAULT_OPTS="--height 80% --layout reverse --info=inline --border --margin=1 --padding=1"
-# CTRL-Y to copy the command into clipboard using pbcopy
+
 export FZF_CTRL_R_OPTS="
   --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort'
   --color header:italic
   --header 'Press CTRL-Y to copy command into clipboard'"
 
+# export FZF_CTRL_T_OPTS="
+#   --walker-skip .git,node_modules,target
+#   --preview 'bat -n --color=always {}'
+#   --bind 'ctrl-h:change-preview-window(down|hidden|)'
+#   --bind 'ctrl-u:preview-half-page-up,ctrl-d:preview-half-page-down'"
+
 export FZF_CTRL_T_OPTS="
+  --prompt 'Files> '
   --walker-skip .git,node_modules,target
-  --preview 'bat -n --color=always {}'
+  --header 'CTRL-T: Switch between Files/Directories'
+  --bind 'ctrl-t:transform:[[ ! \$FZF_PROMPT =~ Files ]] && echo \"change-prompt(Files> )+reload(fd --type file)\" || echo \"change-prompt(Directories> )+reload(fd --type directory)\"'
+  --preview '[[ \$FZF_PROMPT =~ Files ]] && bat --color=always {} || tree -C {}'
   --bind 'ctrl-h:change-preview-window(down|hidden|)'
   --bind 'ctrl-u:preview-half-page-up,ctrl-d:preview-half-page-down'"
 
@@ -20,5 +31,5 @@ export FZF_CTRL_T_OPTS="
 # Print tree structure in the preview window
 export FZF_ALT_C_OPTS="
   --walker-skip .git,node_modules,target
-  --preview 'tree -C {}'
+  --preview 'tree -C {} | head -200'
   --bind 'ctrl-u:preview-half-page-up,ctrl-d:preview-half-page-down'"
