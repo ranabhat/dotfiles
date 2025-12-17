@@ -31,6 +31,30 @@ function M.apply(config)
 			mods = "LEADER",
 			action = wezterm.action.SplitVertical({ domain = "CurrentPaneDomain" }),
 		},
+		-- Increase font size
+		{
+			key = "f",
+			mods = "LEADER",
+			action = wezterm.action.IncreaseFontSize,
+		},
+		{
+			key = "-",
+			mods = "LEADER",
+			action = wezterm.action.DecreaseFontSize,
+		},
+
+		{
+			key = "0",
+			mods = "CTRL",
+			action = wezterm.action.ResetFontAndWindowSize,
+		},
+		{
+			key = "q",
+			mods = "LEADER",
+			action = wezterm.action.ActivateCommandPalette,
+		},
+
+		{ key = "F9", mods = "ALT", action = wezterm.action.ShowTabNavigator },
 		{
 			key = "a",
 			mods = "LEADER|CTRL",
@@ -60,6 +84,13 @@ function M.apply(config)
 		},
 
 		-- spawm zabbix command line in new tab
+		{
+			key = "y",
+			mods = "CMD",
+			action = wezterm.action.SpawnCommandInNewTab({
+				args = { "ssh", "etuProxy" },
+			}),
+		},
 		{
 			key = "p",
 			mods = "LEADER",
@@ -112,6 +143,54 @@ function M.apply(config)
 				timeout_milliseconds = 1000,
 			}),
 		},
+		{
+			key = "b",
+			mods = "LEADER",
+			action = wezterm.action.ActivateKeyTable({
+				name = "ssh_to",
+				timeout_milliseconds = 11000,
+			}),
+		},
+		{
+			key = "d",
+			mods = "LEADER",
+			action = wezterm.action_callback(function(window, pane)
+				local home = wezterm.home_dir
+				local workspaces = {
+					{ id = home, label = "Home" },
+					{ id = home .. "/Developer/dev-tools", label = "Tools" },
+					{ id = home .. "/.dotfiles/.config", label = "Config" },
+				}
+
+				window:perform_action(
+					wezterm.action.InputSelector({
+						action = wezterm.action_callback(function(inner_window, inner_pane, id, label)
+							if not id and not label then
+								wezterm.log_info("canceled")
+							else
+								wezterm.log_info("id = " .. id)
+								wezterm.log_info("label = " .. label)
+								inner_window:perform_action(
+									wezterm.action.SwitchToWorkspace({
+										name = label,
+										spawn = {
+											label = "Workspace: " .. label,
+											cwd = id,
+										},
+									}),
+									inner_pane
+								)
+							end
+						end),
+						title = "Choose Workspace",
+						choices = workspaces,
+						fuzzy = true,
+						fuzzy_description = "Fuzzy find or make a workspace: ",
+					}),
+					pane
+				)
+			end),
+		},
 		move_pane("j", "Down"),
 		move_pane("k", "Up"),
 		move_pane("h", "Left"),
@@ -142,6 +221,72 @@ function M.apply(config)
 			{ key = "j", action = wezterm.action.ScrollByPage(1) },
 			{ key = "K", action = wezterm.action.ScrollByLine(-1) },
 			{ key = "J", action = wezterm.action.ScrollByLine(1) },
+			{ key = "Escape", action = "PopKeyTable" },
+		},
+		ssh_to = {
+			{
+				key = "e",
+				action = wezterm.action.SpawnCommandInNewTab({
+					args = { "ssh", "etuProxy" },
+				}),
+			},
+			{
+				key = "0",
+				action = wezterm.action.SplitPane({
+					direction = "Down", -- or "Left", "Up", "Down"
+					command = {
+						args = { "ssh", "etuProxy" },
+					},
+				}),
+			},
+
+			{
+				key = "t",
+				action = wezterm.action.SpawnCommandInNewTab({
+					args = { "ssh", "taka" },
+				}),
+			},
+			{
+				key = "1",
+				action = wezterm.action.SplitPane({
+					direction = "Down", -- or "Left", "Up", "Down"
+					command = {
+						args = { "ssh", "taka" },
+					},
+				}),
+			},
+			{
+				key = "s",
+				action = wezterm.action.SpawnCommandInNewTab({
+					args = { os.getenv("HOME") .. "/Developer/dev-tools/scripts/device", "RAPFSA7PWQ" },
+				}),
+			},
+			{
+				key = "7",
+				action = wezterm.action.SplitPane({
+					direction = "Down", -- or "Left", "Up", "Down"
+					command = {
+						args = { os.getenv("HOME") .. "/Developer/dev-tools/scripts/device", "RAPFSA7PWQ" },
+					},
+				}),
+			},
+
+			{
+				key = "m",
+				action = wezterm.action.SpawnCommandInNewTab({
+					args = { os.getenv("HOME") .. "/Developer/dev-tools/scripts/device", "4RPQD3Z33I" },
+				}),
+			},
+			{
+				key = "7",
+				action = wezterm.action.SplitPane({
+					direction = "Down", -- or "Left", "Up", "Down"
+					command = {
+						args = { os.getenv("HOME") .. "/Developer/dev-tools/scripts/device", "4RPQD3Z33I" },
+					},
+				}),
+			},
+
 			{ key = "Escape", action = "PopKeyTable" },
 		},
 	}
