@@ -1,0 +1,5 @@
+.config/raycast/*
+.config/zed/*
+.config/television/*
+.config/thefuck/*
+.luarc.json

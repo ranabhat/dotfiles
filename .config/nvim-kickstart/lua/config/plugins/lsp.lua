@@ -124,11 +124,11 @@ return {
           ---@param bufnr? integer some lsp support methods only in specific files
           ---@return boolean
           local function client_supports_method(client, method, bufnr)
-            if vim.fn.has 'nvim-0.11' == 1 then
-              return client:supports_method(method, bufnr)
-            else
-              return client.supports_method(method, { bufnr = bufnr })
-            end
+            -- if vim.fn.has 'nvim-0.11' == 1 then
+            return client:supports_method(method, bufnr)
+            -- else
+            --   return client.supports_method(method, { bufnr = bufnr })
+            -- end
           end
 
           -- The following two autocommands are used to highlight references of the
@@ -229,8 +229,8 @@ return {
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
-        -- clangd = {},
-        -- gopls = {},
+        clangd = {},
+        gopls = {},
         -- pylyzer = {},
         -- pyright = {},
         -- pylsp = {
@@ -354,6 +354,22 @@ return {
           end,
         },
       }
+      -- vim.lsp.config('sourcekit', {
+      --   capabilities = capabilities,
+      --   cmd = { vim.trim(vim.fn.system 'xcrun -f sourcekit-lsp') },
+      -- })
+      -- vim.lsp.enable 'sourcekit'
+      -- require('lspconfig').sourcekit.setup {
+      --   cmd = { 'xcrun', 'sourcekit-lsp' },
+      --   filetypes = { 'swift', 'objective-c', 'objective-cpp' },
+      --   capabilities = {
+      --     workspace = {
+      --       didChangeWatchedFiles = {
+      --         dynamicRegistration = true,
+      --       },
+      --     },
+      --   },
+      -- }
     end,
   },
 }
