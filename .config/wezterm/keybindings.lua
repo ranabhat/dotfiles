@@ -65,47 +65,18 @@ function M.apply(config)
 			mods = "LEADER",
 			action = wezterm.action.TogglePaneZoomState,
 		},
-
-		{
-			key = "n",
-			mods = "LEADER",
-			action = wezterm.action.ToggleFullScreen,
-		},
-
 		{
 			key = "x",
 			mods = "LEADER",
 			action = wezterm.action.CloseCurrentPane({ confirm = false }),
 		},
-		{
-			key = "c",
-			mods = "LEADER",
-			action = wezterm.action.SendString("clear\n"),
-		},
+		-- {
+		-- 	key = "c",
+		-- 	mods = "LEADER",
+		-- 	action = wezterm.action.SendString("clear\n"),
+		-- },
 
 		-- spawm zabbix command line in new tab
-		{
-			key = "y",
-			mods = "CMD",
-			action = wezterm.action.SpawnCommandInNewTab({
-				args = { "ssh", "etuProxy" },
-			}),
-		},
-		{
-			key = "p",
-			mods = "LEADER",
-			action = wezterm.action.PaneSelect({
-				alphabet = "1234567890",
-			}),
-		},
-
-		{
-			key = "s",
-			mods = "LEADER",
-			action = wezterm.action.PaneSelect({
-				mode = "SwapWithActive",
-			}),
-		},
 		-- spawm zabbix command line in new tab
 		-- {
 		-- 	key = "z",
@@ -144,6 +115,14 @@ function M.apply(config)
 			}),
 		},
 		{
+			key = "p",
+			mods = "LEADER",
+			action = wezterm.action.ActivateKeyTable({
+				name = "pane_action",
+				one_shot = false,
+			}),
+		},
+		{
 			key = "b",
 			mods = "LEADER",
 			action = wezterm.action.ActivateKeyTable({
@@ -152,7 +131,7 @@ function M.apply(config)
 			}),
 		},
 		{
-			key = "d",
+			key = "w",
 			mods = "LEADER",
 			action = wezterm.action_callback(function(window, pane)
 				local home = wezterm.home_dir
@@ -191,6 +170,11 @@ function M.apply(config)
 				)
 			end),
 		},
+		{
+			key = "9",
+			mods = "ALT",
+			action = wezterm.action.ShowLauncherArgs({ flags = "FUZZY|WORKSPACES" }),
+		},
 		move_pane("j", "Down"),
 		move_pane("k", "Up"),
 		move_pane("h", "Left"),
@@ -214,6 +198,28 @@ function M.apply(config)
 			{ key = "l", action = wezterm.action.ActivatePaneDirection("Right") },
 			{ key = "k", action = wezterm.action.ActivatePaneDirection("Up") },
 			{ key = "j", action = wezterm.action.ActivatePaneDirection("Down") },
+		},
+		pane_action = {
+
+			{
+				key = "p",
+				action = wezterm.action.PaneSelect({
+					alphabet = "1234567890",
+				}),
+			},
+
+			{
+				key = "s",
+				action = wezterm.action.PaneSelect({
+					mode = "SwapWithActive",
+				}),
+			},
+			{
+				key = "r",
+				action = wezterm.action.RotatePanes("Clockwise"),
+			},
+
+			{ key = "Escape", action = "PopKeyTable" },
 		},
 
 		scroll = {
