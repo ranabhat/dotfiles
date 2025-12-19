@@ -41,7 +41,7 @@ return {
           -- To organize the imports.
           'ruff_organize_imports',
         },
-        swift = { 'swiftformat' },
+        -- swift = { 'swiftformat' },
         -- markdown = {
         --   'prettier',
         -- },

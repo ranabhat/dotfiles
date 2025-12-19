@@ -3,3 +3,4 @@
 .config/television/*
 .config/thefuck/*
 .luarc.json
+.DS_Store

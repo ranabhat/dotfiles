@@ -4,20 +4,68 @@ local wezterm = require("wezterm")
 local home = os.getenv("HOME")
 
 local M = {}
-
--- Helper function for pane movement
-local function move_pane(key, direction)
-	return {
-		key = key,
-		mods = "LEADER",
-		action = wezterm.action.ActivatePaneDirection(direction),
-	}
-end
+-- Show which key table is active in the status area
+-- wezterm.on("update-right-status", function(window, _)
+-- 	local name = window:active_key_table()
+-- 	if name then
+-- 		name = "TABLE: " .. name
+-- 	end
+-- 	window:set_right_status(name or "")
+-- end)
 
 function M.apply(config)
 	-- Set leader key
 	config.leader = { key = "a", mods = "CTRL", timeout_milliseconds = 1000 }
 
+	config.launch_menu = {
+		{
+			label = "Wezterm Keybindings",
+			args = { "/opt/homebrew/bin/nvim", "wezterm/keybindings.lua" },
+			cwd = home .. "/.dotfiles/.config",
+		},
+		{
+			label = "Aerospace config",
+			args = { "/opt/homebrew/bin/nvim", "aerospace/aerospace.toml" },
+			cwd = home .. "/.dotfiles/.config",
+		},
+
+		{
+			label = "Lazygit config",
+			args = { "/opt/homebrew/bin/nvim", "lazygit/config.yml" },
+			cwd = home .. "/.dotfiles/.config",
+		},
+
+		{
+			label = "zshrc config",
+			args = { "/opt/homebrew/bin/nvim", home .. "/.zshrc" },
+		},
+
+		{
+			label = "fzf config",
+			args = { "/opt/homebrew/bin/nvim", "fzf/fzfrc" },
+			cwd = home .. "/.dotfiles/.config",
+		},
+
+		-- {
+		-- 	-- Optional label to show in the launcher. If omitted, a label
+		-- 	-- is derived from the `args`
+		-- 	label = "Bash",
+		-- 	-- The argument array to spawn.  If omitted the default program
+		-- 	-- will be used as described in the documentation above
+		-- 	args = { "bash", "-l" },
+		--
+		-- 	-- You can specify an alternative current working directory;
+		-- 	-- if you don't specify one then a default based on the OSC 7
+		-- 	-- escape sequence will be used (see the Shell Integration
+		-- 	-- docs), falling back to the home directory.
+		-- 	-- cwd = "/some/path"
+		--
+		-- 	-- You can override environment variables just for this command
+		-- 	-- by setting this here.  It has the same semantics as the main
+		-- 	-- set_environment_variables configuration option described above
+		-- 	-- set_environment_variables = { FOO = "bar" },
+		-- },
+	}
 	--Keybindings
 	config.keys = {
 		-- Pane splitting
@@ -31,30 +79,11 @@ function M.apply(config)
 			mods = "LEADER",
 			action = wezterm.action.SplitVertical({ domain = "CurrentPaneDomain" }),
 		},
-		-- Increase font size
-		{
-			key = "f",
-			mods = "LEADER",
-			action = wezterm.action.IncreaseFontSize,
-		},
-		{
-			key = "-",
-			mods = "LEADER",
-			action = wezterm.action.DecreaseFontSize,
-		},
-
-		{
-			key = "0",
-			mods = "CTRL",
-			action = wezterm.action.ResetFontAndWindowSize,
-		},
 		{
 			key = "q",
 			mods = "LEADER",
 			action = wezterm.action.ActivateCommandPalette,
 		},
-
-		{ key = "F9", mods = "ALT", action = wezterm.action.ShowTabNavigator },
 		{
 			key = "a",
 			mods = "LEADER|CTRL",
@@ -65,18 +94,6 @@ function M.apply(config)
 			mods = "LEADER",
 			action = wezterm.action.TogglePaneZoomState,
 		},
-		{
-			key = "x",
-			mods = "LEADER",
-			action = wezterm.action.CloseCurrentPane({ confirm = false }),
-		},
-		-- {
-		-- 	key = "c",
-		-- 	mods = "LEADER",
-		-- 	action = wezterm.action.SendString("clear\n"),
-		-- },
-
-		-- spawm zabbix command line in new tab
 		-- spawm zabbix command line in new tab
 		-- {
 		-- 	key = "z",
@@ -88,56 +105,62 @@ function M.apply(config)
 		-- CTRL+SHIFT+Space, followed by 'a' will put us in activate-pane
 		-- mode until we press some other key or until 1 second (1000ms)
 		-- of time elapses
+		{
+			key = "f",
+			mods = "ALT",
+			action = wezterm.action.ActivateKeyTable({
+				name = "font_size",
+				until_unknown = true,
+				one_shot = false,
+			}),
+		},
 
 		-- scroll page
 		{
 			key = "m",
-			mods = "LEADER",
+			mods = "ALT",
 			action = wezterm.action.ActivateKeyTable({
 				name = "scroll",
+				until_unknown = true,
 				one_shot = false,
 			}),
 		},
 		{
-			key = "r",
-			mods = "LEADER",
+			key = "p",
+			mods = "ALT",
 			action = wezterm.action.ActivateKeyTable({
-				name = "resize_pane",
+				name = "pane_action",
+				until_unknown = true,
 				one_shot = false,
 			}),
 		},
 		{
 			key = "a",
-			mods = "LEADER",
+			mods = "ALT",
 			action = wezterm.action.ActivateKeyTable({
-				name = "activate_pane",
-				timeout_milliseconds = 1000,
-			}),
-		},
-		{
-			key = "p",
-			mods = "LEADER",
-			action = wezterm.action.ActivateKeyTable({
-				name = "pane_action",
+				name = "ssh_to",
+				until_unknown = true,
 				one_shot = false,
 			}),
 		},
+		-- { key = "F1", mods = "ALT", action = wezterm.action.ShowLauncher },
 		{
-			key = "b",
-			mods = "LEADER",
-			action = wezterm.action.ActivateKeyTable({
-				name = "ssh_to",
-				timeout_milliseconds = 11000,
+			key = "F9",
+			mods = "ALT",
+			action = wezterm.action.ShowLauncherArgs({
+				-- flags = "FUZZY|TABS|LAUNCH_MENU_ITEMS|WORKSPACES",
+				flags = "FUZZY|LAUNCH_MENU_ITEMS|WORKSPACES",
 			}),
 		},
 		{
-			key = "w",
-			mods = "LEADER",
+			key = "F8",
+			mods = "ALT",
 			action = wezterm.action_callback(function(window, pane)
 				local home = wezterm.home_dir
 				local workspaces = {
-					{ id = home, label = "Home" },
+					{ id = home .. "/Developer/repos/pe-github/parkkisahko-pilot", label = "PP-Ansible" },
 					{ id = home .. "/Developer/dev-tools", label = "Tools" },
+					{ id = home .. "/Developer/pe-issues/device-log", label = "Charger-Log" },
 					{ id = home .. "/.dotfiles/.config", label = "Config" },
 				}
 
@@ -164,41 +187,15 @@ function M.apply(config)
 						title = "Choose Workspace",
 						choices = workspaces,
 						fuzzy = true,
-						fuzzy_description = "Fuzzy find or make a workspace: ",
+						fuzzy_description = "Fuzzy find or create a workspace: ",
 					}),
 					pane
 				)
 			end),
 		},
-		{
-			key = "9",
-			mods = "ALT",
-			action = wezterm.action.ShowLauncherArgs({ flags = "FUZZY|WORKSPACES" }),
-		},
-		move_pane("j", "Down"),
-		move_pane("k", "Up"),
-		move_pane("h", "Left"),
-		move_pane("l", "Right"),
-		{ key = "F1", mods = "ALT", action = wezterm.action.ActivatePaneByIndex(0) },
-		{ key = "F2", mods = "ALT", action = wezterm.action.ActivatePaneByIndex(1) },
-		{ key = "F3", mods = "ALT", action = wezterm.action.ActivatePaneByIndex(2) },
-		{ key = "F4", mods = "ALT", action = wezterm.action.ActivatePaneByIndex(3) },
 	}
 
 	config.key_tables = {
-		resize_pane = {
-			{ key = "h", action = wezterm.action.AdjustPaneSize({ "Left", 5 }) },
-			{ key = "l", action = wezterm.action.AdjustPaneSize({ "Right", 5 }) },
-			{ key = "k", action = wezterm.action.AdjustPaneSize({ "Up", 5 }) },
-			{ key = "j", action = wezterm.action.AdjustPaneSize({ "Down", 5 }) },
-			{ key = "Escape", action = "PopKeyTable" },
-		},
-		activate_pane = {
-			{ key = "h", action = wezterm.action.ActivatePaneDirection("Left") },
-			{ key = "l", action = wezterm.action.ActivatePaneDirection("Right") },
-			{ key = "k", action = wezterm.action.ActivatePaneDirection("Up") },
-			{ key = "j", action = wezterm.action.ActivatePaneDirection("Down") },
-		},
 		pane_action = {
 
 			{
@@ -215,19 +212,53 @@ function M.apply(config)
 				}),
 			},
 			{
+				key = "t",
+				action = wezterm.action.PaneSelect({
+					alphabet = "adfqwe",
+					mode = "MoveToNewTab",
+				}),
+			},
+			{
 				key = "r",
 				action = wezterm.action.RotatePanes("Clockwise"),
 			},
+			{
+				key = "x",
+				action = wezterm.action.CloseCurrentPane({ confirm = false }),
+			},
+			{ key = "h", action = wezterm.action.AdjustPaneSize({ "Left", 5 }) },
+			{ key = "l", action = wezterm.action.AdjustPaneSize({ "Right", 5 }) },
+			{ key = "k", action = wezterm.action.AdjustPaneSize({ "Up", 5 }) },
+			{ key = "j", action = wezterm.action.AdjustPaneSize({ "Down", 5 }) },
 
-			{ key = "Escape", action = "PopKeyTable" },
+			-- { key = "Escape", action = "PopKeyTable" },
 		},
+		font_size = {
+			-- Increase font size
+			{
+				key = "+",
+				action = wezterm.action.IncreaseFontSize,
+			},
+			{
+				key = "-",
+				action = wezterm.action.DecreaseFontSize,
+			},
 
+			{
+				key = "=",
+				action = wezterm.action.ResetFontAndWindowSize,
+			},
+		},
 		scroll = {
-			{ key = "k", action = wezterm.action.ScrollByPage(-1) },
-			{ key = "j", action = wezterm.action.ScrollByPage(1) },
-			{ key = "K", action = wezterm.action.ScrollByLine(-1) },
-			{ key = "J", action = wezterm.action.ScrollByLine(1) },
-			{ key = "Escape", action = "PopKeyTable" },
+			{ key = "h", action = wezterm.action.ActivatePaneDirection("Left") },
+			{ key = "l", action = wezterm.action.ActivatePaneDirection("Right") },
+			{ key = "k", action = wezterm.action.ActivatePaneDirection("Up") },
+			{ key = "j", action = wezterm.action.ActivatePaneDirection("Down") },
+			{ key = "u", action = wezterm.action.ScrollByPage(-1) },
+			{ key = "d", action = wezterm.action.ScrollByPage(1) },
+			{ key = "U", action = wezterm.action.ScrollByLine(-1) },
+			{ key = "D", action = wezterm.action.ScrollByLine(1) },
+			-- { key = "Escape", action = "PopKeyTable" },
 		},
 		ssh_to = {
 			{
@@ -264,7 +295,7 @@ function M.apply(config)
 			{
 				key = "s",
 				action = wezterm.action.SpawnCommandInNewTab({
-					args = { os.getenv("HOME") .. "/Developer/dev-tools/scripts/device", "RAPFSA7PWQ" },
+					args = { home .. "/Developer/dev-tools/scripts/device", "RAPFSA7PWQ" },
 				}),
 			},
 			{
@@ -272,7 +303,7 @@ function M.apply(config)
 				action = wezterm.action.SplitPane({
 					direction = "Down", -- or "Left", "Up", "Down"
 					command = {
-						args = { os.getenv("HOME") .. "/Developer/dev-tools/scripts/device", "RAPFSA7PWQ" },
+						args = { home .. "/Developer/dev-tools/scripts/device", "RAPFSA7PWQ" },
 					},
 				}),
 			},
@@ -280,7 +311,7 @@ function M.apply(config)
 			{
 				key = "m",
 				action = wezterm.action.SpawnCommandInNewTab({
-					args = { os.getenv("HOME") .. "/Developer/dev-tools/scripts/device", "4RPQD3Z33I" },
+					args = { home .. "/Developer/dev-tools/scripts/device", "4RPQD3Z33I" },
 				}),
 			},
 			{
@@ -288,12 +319,12 @@ function M.apply(config)
 				action = wezterm.action.SplitPane({
 					direction = "Down", -- or "Left", "Up", "Down"
 					command = {
-						args = { os.getenv("HOME") .. "/Developer/dev-tools/scripts/device", "4RPQD3Z33I" },
+						args = { home .. "/Developer/dev-tools/scripts/device", "4RPQD3Z33I" },
 					},
 				}),
 			},
 
-			{ key = "Escape", action = "PopKeyTable" },
+			-- { key = "Escape", action = "PopKeyTable" },
 		},
 	}
 end
