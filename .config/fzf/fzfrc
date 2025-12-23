@@ -19,11 +19,22 @@ export FZF_CTRL_R_OPTS="
 export FZF_CTRL_T_OPTS="
   --prompt 'Files> '
   --walker-skip .git,node_modules,target
-  --header 'CTRL-T: Switch between Files/Directories'
+  --header 'CTRL-T: Switch between Files/Directories | CTRL-H: Hidden | CTRL-L: Change Preview Window'
   --bind 'ctrl-t:transform:[[ ! \$FZF_PROMPT =~ Files ]] && echo \"change-prompt(Files> )+reload(fd --type file)\" || echo \"change-prompt(Directories> )+reload(fd --type directory)\"'
-  --preview '[[ \$FZF_PROMPT =~ Files ]] && bat --color=always {} || tree -C {}'
-  --bind 'ctrl-h:change-preview-window(down|hidden|)'
-  --bind 'ctrl-u:preview-half-page-up,ctrl-d:preview-half-page-down'"
+  --bind 'ctrl-h:transform:[[ ! \$FZF_PROMPT =~ Hidden ]] && echo \"change-prompt(Files [Hidden]> )+reload(fd --type file --hidden --no-ignore)\" || echo \"change-prompt(Files> )+reload(fd --type file)\"'
+  # --preview '[[ \$FZF_PROMPT =~ Files ]] && bat --color=always {} || tree -C {}'
+  --preview 'if [[ \$FZF_PROMPT =~ Files ]]; then
+    if [[ {} =~ \.(jpg|jpeg|png|gif|bmp|webp|svg)$ ]]; then
+      chafa -f sixel -s \${FZF_PREVIEW_COLUMNS}x\${FZF_PREVIEW_LINES} {}
+    else
+      bat --color=always {}
+    fi
+  else
+    tree -C {}
+  fi'
+  --bind 'ctrl-l:change-preview-window(down|hidden|)'
+  --bind 'ctrl-u:preview-half-page-up,ctrl-d:preview-half-page-down'
+  --bind 'enter:transform:[[ \$FZF_PROMPT =~ Files ]] && echo \"execute(nvim {})\" || echo \"accept\"'"
 
 # Disable Ctrl T Command
 # export FZF_CTRL_T_COMMAND=" "
