@@ -130,8 +130,8 @@ function M.apply(config)
 			mods = "ALT",
 			action = wezterm.action.ActivateKeyTable({
 				name = "pane_action",
-				until_unknown = true,
-				one_shot = false,
+				-- until_unknown = true,
+				one_shot = true,
 			}),
 		},
 		{
