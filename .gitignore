@@ -1,6 +1,12 @@
 .config/raycast/*
+.config/glow/*
+.config/toad/*
 .config/zed/*
 .config/television/*
 .config/thefuck/*
 .luarc.json
 .DS_Store
+.config/lazysql/*
+.config/act/*
+.config/mole/*
+

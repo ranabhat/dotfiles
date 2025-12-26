@@ -231,6 +231,7 @@ return {
       local servers = {
         clangd = {},
         gopls = {},
+        bashls = {},
         -- pylyzer = {},
         -- pyright = {},
         -- pylsp = {

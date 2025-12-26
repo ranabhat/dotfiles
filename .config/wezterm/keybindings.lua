@@ -130,8 +130,17 @@ function M.apply(config)
 			mods = "ALT",
 			action = wezterm.action.ActivateKeyTable({
 				name = "pane_action",
-				until_unknown = true,
-				one_shot = false,
+				-- until_unknown = true,
+				one_shot = true,
+			}),
+		},
+		{
+			key = "t",
+			mods = "LEADER",
+			action = wezterm.action.ActivateKeyTable({
+				name = "move_tab",
+				-- until_unknown = true,
+				one_shot = true,
 			}),
 		},
 		{
@@ -139,8 +148,8 @@ function M.apply(config)
 			mods = "ALT",
 			action = wezterm.action.ActivateKeyTable({
 				name = "ssh_to",
-				until_unknown = true,
-				one_shot = false,
+				-- until_unknown = true,
+				one_shot = true,
 			}),
 		},
 		-- { key = "F1", mods = "ALT", action = wezterm.action.ShowLauncher },
@@ -151,6 +160,26 @@ function M.apply(config)
 				-- flags = "FUZZY|TABS|LAUNCH_MENU_ITEMS|WORKSPACES",
 				flags = "FUZZY|LAUNCH_MENU_ITEMS|WORKSPACES",
 			}),
+		},
+		{
+			key = "F1",
+			mods = "ALT",
+			action = wezterm.action.ActivatePaneByIndex(0),
+		},
+		{
+			key = "F2",
+			mods = "ALT",
+			action = wezterm.action.ActivatePaneByIndex(1),
+		},
+		{
+			key = "F3",
+			mods = "ALT",
+			action = wezterm.action.ActivatePaneByIndex(2),
+		},
+		{
+			key = "F4",
+			mods = "ALT",
+			action = wezterm.action.ActivatePaneByIndex(4),
 		},
 		{
 			key = "F8",
@@ -233,6 +262,36 @@ function M.apply(config)
 
 			-- { key = "Escape", action = "PopKeyTable" },
 		},
+		move_tab = {
+			{
+				key = "1",
+				action = wezterm.action.MoveTab(0),
+			},
+			{
+				key = "2",
+				action = wezterm.action.MoveTab(1),
+			},
+			{
+				key = "3",
+				action = wezterm.action.MoveTab(2),
+			},
+			{
+				key = "4",
+				action = wezterm.action.MoveTab(3),
+			},
+			{
+				key = "5",
+				action = wezterm.action.MoveTab(4),
+			},
+			{
+				key = "6",
+				action = wezterm.action.MoveTab(5),
+			},
+			{
+				key = "7",
+				action = wezterm.action.MoveTab(6),
+			},
+		},
 		font_size = {
 			-- Increase font size
 			{
@@ -268,7 +327,7 @@ function M.apply(config)
 				}),
 			},
 			{
-				key = "0",
+				key = "E",
 				action = wezterm.action.SplitPane({
 					direction = "Down", -- or "Left", "Up", "Down"
 					command = {
@@ -284,7 +343,7 @@ function M.apply(config)
 				}),
 			},
 			{
-				key = "1",
+				key = "T",
 				action = wezterm.action.SplitPane({
 					direction = "Down", -- or "Left", "Up", "Down"
 					command = {
@@ -299,7 +358,7 @@ function M.apply(config)
 				}),
 			},
 			{
-				key = "7",
+				key = "S",
 				action = wezterm.action.SplitPane({
 					direction = "Down", -- or "Left", "Up", "Down"
 					command = {
@@ -315,7 +374,7 @@ function M.apply(config)
 				}),
 			},
 			{
-				key = "7",
+				key = "M",
 				action = wezterm.action.SplitPane({
 					direction = "Down", -- or "Left", "Up", "Down"
 					command = {
