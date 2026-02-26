@@ -66,6 +66,17 @@ function M.apply(config)
 		-- 	-- set_environment_variables = { FOO = "bar" },
 		-- },
 	}
+	config.ssh_domains = {
+		{
+			name = "openclaw-mac-vm",
+			remote_address = "192.168.64.4",
+			username = "developer",
+			multiplexing = "None",
+			ssh_option = {
+				identityfile = "~/.ssh/openclaw-mac-cm",
+			},
+		},
+	}
 	--Keybindings
 	config.keys = {
 		-- Pane splitting
@@ -143,6 +154,8 @@ function M.apply(config)
 				one_shot = true,
 			}),
 		},
+		{ key = "n", mods = "CTRL|SHIFT", action = wezterm.action.SwitchWorkspaceRelative(1) },
+		{ key = "p", mods = "CTRL|SHIFT", action = wezterm.action.SwitchWorkspaceRelative(-1) },
 		{
 			key = "a",
 			mods = "ALT",
