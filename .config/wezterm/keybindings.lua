@@ -68,8 +68,8 @@ function M.apply(config)
 	}
 	config.ssh_domains = {
 		{
-			name = "openclaw-mac-vm",
-			remote_address = "192.168.64.4",
+			name = "openclaw",
+			remote_address = "192.168.64.5",
 			username = "developer",
 			multiplexing = "None",
 			ssh_option = {

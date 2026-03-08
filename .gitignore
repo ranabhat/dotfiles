@@ -9,4 +9,5 @@
 .config/lazysql/*
 .config/act/*
 .config/mole/*
-
+.config/nvm
+.config/vortix/*
