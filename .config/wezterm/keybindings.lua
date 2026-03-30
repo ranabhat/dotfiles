@@ -15,8 +15,8 @@ local M = {}
 
 function M.apply(config)
 	-- Set leader key
-	config.leader = { key = "a", mods = "CTRL", timeout_milliseconds = 1000 }
 
+	config.leader = { key = "a", mods = "CTRL", timeout_milliseconds = 1000 }
 	config.launch_menu = {
 		{
 			label = "Wezterm Keybindings",
@@ -90,6 +90,12 @@ function M.apply(config)
 			mods = "LEADER",
 			action = wezterm.action.SplitVertical({ domain = "CurrentPaneDomain" }),
 		},
+		-- {
+		-- 	key = "H",
+		-- 	mods = "SHIFT|CTRL",
+		-- 	action = wezterm.action.Search({ Regex = "tolppa40A36BxC4_\\d{5}" }),
+		-- },
+
 		{
 			key = "q",
 			mods = "LEADER",
@@ -172,6 +178,30 @@ function M.apply(config)
 			action = wezterm.action.ShowLauncherArgs({
 				-- flags = "FUZZY|TABS|LAUNCH_MENU_ITEMS|WORKSPACES",
 				flags = "FUZZY|LAUNCH_MENU_ITEMS|WORKSPACES",
+			}),
+		},
+		{
+			key = "F11",
+			mods = "ALT",
+			action = wezterm.action.PromptInputLine({
+				description = wezterm.format({
+					{ Attribute = { Intensity = "Bold" } },
+					{ Foreground = { AnsiColor = "Fuchsia" } },
+					{ Text = "Enter name for new workspace" },
+				}),
+				action = wezterm.action_callback(function(window, pane, line)
+					-- line will be `nil` if they hit escape without entering anything
+					-- An empty string if they just hit enter
+					-- Or the actual line of text they wrote
+					if line then
+						window:perform_action(
+							wezterm.action.SwitchToWorkspace({
+								name = line,
+							}),
+							pane
+						)
+					end
+				end),
 			}),
 		},
 		{
@@ -336,7 +366,7 @@ function M.apply(config)
 			{
 				key = "e",
 				action = wezterm.action.SpawnCommandInNewTab({
-					args = { "ssh", "etuProxy" },
+					args = { "ssh", "home-mac" },
 				}),
 			},
 			{
@@ -344,58 +374,10 @@ function M.apply(config)
 				action = wezterm.action.SplitPane({
 					direction = "Down", -- or "Left", "Up", "Down"
 					command = {
-						args = { "ssh", "etuProxy" },
+						args = { "ssh", "home-mac" },
 					},
 				}),
 			},
-
-			{
-				key = "t",
-				action = wezterm.action.SpawnCommandInNewTab({
-					args = { "ssh", "taka" },
-				}),
-			},
-			{
-				key = "T",
-				action = wezterm.action.SplitPane({
-					direction = "Down", -- or "Left", "Up", "Down"
-					command = {
-						args = { "ssh", "taka" },
-					},
-				}),
-			},
-			{
-				key = "s",
-				action = wezterm.action.SpawnCommandInNewTab({
-					args = { home .. "/Developer/dev-tools/scripts/device", "RAPFSA7PWQ" },
-				}),
-			},
-			{
-				key = "S",
-				action = wezterm.action.SplitPane({
-					direction = "Down", -- or "Left", "Up", "Down"
-					command = {
-						args = { home .. "/Developer/dev-tools/scripts/device", "RAPFSA7PWQ" },
-					},
-				}),
-			},
-
-			{
-				key = "m",
-				action = wezterm.action.SpawnCommandInNewTab({
-					args = { home .. "/Developer/dev-tools/scripts/device", "4RPQD3Z33I" },
-				}),
-			},
-			{
-				key = "M",
-				action = wezterm.action.SplitPane({
-					direction = "Down", -- or "Left", "Up", "Down"
-					command = {
-						args = { home .. "/Developer/dev-tools/scripts/device", "4RPQD3Z33I" },
-					},
-				}),
-			},
-
 			-- { key = "Escape", action = "PopKeyTable" },
 		},
 	}
