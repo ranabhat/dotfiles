@@ -215,13 +215,14 @@ return {
         --   },
         -- },
         -- },
+
+        trigger = {
+          show_on_trigger_character = true,
+          show_on_keyword = true,
+        },
         menu = {
 
           border = 'rounded',
-          trigger = {
-            preselect = true,
-            show_on_trigger_character = true,
-          },
           draw = {
             -- We don't need label_description now because label and label_description are already
             -- combined together in label by colorful-menu.nvim.

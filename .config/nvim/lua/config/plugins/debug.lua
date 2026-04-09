@@ -9,6 +9,7 @@
 return {
   -- NOTE: Yes, you can install new plugins here!
   'mfussenegger/nvim-dap',
+  event = 'VeryLazy',
   -- NOTE: And you can specify dependencies as well
   dependencies = {
     -- Creates a beautiful debugger UI
@@ -20,9 +21,14 @@ return {
     -- Installs the debug adapters for you
     'mason-org/mason.nvim',
     'jay-babu/mason-nvim-dap.nvim',
+    {
+      'theHamsta/nvim-dap-virtual-text',
+      opts = {},
+    },
 
     -- Add your own debuggers here
     'leoluz/nvim-dap-go',
+    -- 'mfussenegger/nvim-dap-python',
   },
   keys = {
     -- Basic debugging keymaps, feel free to change to your liking!
@@ -95,6 +101,7 @@ return {
       ensure_installed = {
         -- Update this to ensure that you have the debuggers for the langs you want
         'delve',
+        -- 'debugpy',
       },
     }
 
@@ -144,5 +151,8 @@ return {
         detached = vim.fn.has 'win32' == 0,
       },
     }
+
+    -- Install python specific config
+    -- require('dap-python').setup '.venv/bin/python'
   end,
 }

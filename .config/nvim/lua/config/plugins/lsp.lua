@@ -31,13 +31,14 @@ return {
     },
     config = function()
       local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
-      function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
+      ---@diagnostic disable-next-line: duplicate-set-field
+      function vim.lsp.util.open_floating_preview(contents, syntax, opts)
         opts = opts or {}
         opts.border = 'rounded'
         opts.max_width = 600
         opts.max_height = 30
         opts.focusable = false
-        return orig_util_open_floating_preview(contents, syntax, opts, ...)
+        return orig_util_open_floating_preview(contents, syntax, opts)
       end
       -- Brief aside: **What is LSP?**
       --
@@ -117,6 +118,7 @@ return {
           --  Useful when you're not sure what type a variable is and you want to see
           --  the definition of its *type*, not where it was *defined*.
           map('grt', require('telescope.builtin').lsp_type_definitions, '[G]oto [T]ype Definition')
+          map('<C-k>', vim.lsp.buf.signature_help, 'Signature Help', 'i')
 
           -- This function resolves a difference between neovim nightly (version 0.11) and stable (version 0.10)
           ---@param client vim.lsp.Client
