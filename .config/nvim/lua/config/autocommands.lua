@@ -48,3 +48,29 @@ vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
     vim.bo.filetype = 'json'
   end,
 })
+
+-- open vim help vertical split
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'help',
+  command = 'wincmd L',
+})
+
+-- auto resize splits when the terminalös window is resized
+vim.api.nvim_create_autocmd('VimResized', {
+  command = 'wincmd =',
+})
+
+-- no auto comments
+vim.api.nvim_create_autocmd({ 'BufEnter', 'FileType' }, {
+  group = vim.api.nvim_create_augroup('no_auto_comment', {}),
+  callback = function()
+    vim.opt_local.formatoptions:remove { 'c', 'r', 'o' }
+  end,
+})
+
+-- Remove Trailing Whitespace from all files before saving.
+vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
+  group = vim.api.nvim_create_augroup('no_white_space', {}),
+  pattern = '*',
+  command = [[%s/\s\+$//e]],
+})
