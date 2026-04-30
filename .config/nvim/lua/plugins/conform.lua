@@ -41,32 +41,12 @@ return {
           -- To organize the imports.
           'ruff_organize_imports',
         },
-        -- swift = { 'swiftformat' },
         -- markdown = {
         --   'prettier',
         -- },
-        -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
         --
-        -- You can use 'stop_after_first' to run the first available formatter from the list
         -- javascript = { "prettierd", "prettier", stop_after_first = true },
       },
     },
-    -- config = function(_, opts)
-    --   local conform = require 'conform'
-    --   conform.setup(opts)
-    --   conform.formatters.shfmt = {
-    --     prepend_args = { '-i', '2' }, -- 2 spaces instead of tab
-    --   }
-    --   conform.formatters.stylua = {
-    --     prepend_args = { '--indent-type', 'Spaces', '--indent-width', '2' }, -- 2 spaces instead of tab
-    --   }
-    --   vim.g.autoformat = vim.g.autoformat
-    --   vim.api.nvim_create_user_command('ToggleAutoformat', function()
-    --     vim.api.nvim_notify('Toggling autoformat', vim.log.levels.INFO, { title = 'conform.nvim', timeout = 2000 })
-    --     vim.g.autoformat = vim.g.autoformat == false and true or false
-    --   end, { desc = 'Toggling autoformat' })
-    --   vim.keymap.set('n', '<leader>tF', '<cmd>ToggleAutoformat<cr>', { desc = 'Toggle format on save' })
-    -- end,
   },
 }
