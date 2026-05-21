@@ -124,7 +124,7 @@ function M.apply(config)
 		-- of time elapses
 		{
 			key = "f",
-			mods = "ALT",
+			mods = "LEADER",
 			action = wezterm.action.ActivateKeyTable({
 				name = "font_size",
 				until_unknown = true,
@@ -147,8 +147,8 @@ function M.apply(config)
 			mods = "ALT",
 			action = wezterm.action.ActivateKeyTable({
 				name = "pane_action",
-				-- until_unknown = true,
-				one_shot = true,
+				until_unknown = true,
+				one_shot = false,
 			}),
 		},
 		{
@@ -205,6 +205,21 @@ function M.apply(config)
 			}),
 		},
 		{
+			key = "F12",
+			mods = "ALT",
+			action = wezterm.action.PromptInputLine({
+				description = "Enter new name for tab",
+				action = wezterm.action_callback(function(window, pane, line)
+					-- line will be `nil` if they hit escape without entering anything
+					-- An empty string if they just hit enter
+					-- Or the actual line of text they wrote
+					if line then
+						window:active_tab():set_title(line)
+					end
+				end),
+			}),
+		},
+		{
 			key = "F1",
 			mods = "ALT",
 			action = wezterm.action.ActivatePaneByIndex(0),
@@ -222,7 +237,7 @@ function M.apply(config)
 		{
 			key = "F4",
 			mods = "ALT",
-			action = wezterm.action.ActivatePaneByIndex(4),
+			action = wezterm.action.ActivatePaneByIndex(3),
 		},
 		{
 			key = "F8",
@@ -303,7 +318,7 @@ function M.apply(config)
 			{ key = "k", action = wezterm.action.AdjustPaneSize({ "Up", 5 }) },
 			{ key = "j", action = wezterm.action.AdjustPaneSize({ "Down", 5 }) },
 
-			-- { key = "Escape", action = "PopKeyTable" },
+			{ key = "Escape", action = "PopKeyTable" },
 		},
 		move_tab = {
 			{

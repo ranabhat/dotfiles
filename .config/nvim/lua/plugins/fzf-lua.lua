@@ -10,6 +10,7 @@ return {
         winopts = { border = 'rounded' },
         lsp = {
           code_actions = {
+            prompt = 'Code Actions> ',
             winopts = {
               width = 70,
               height = 20,

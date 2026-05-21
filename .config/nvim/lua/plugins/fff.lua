@@ -1,6 +1,7 @@
 return {
   {
     'dmtrKovalenko/fff.nvim',
+    enabled = true,
     build = function()
       -- this will download prebuild binary or try to use existing rustup toolchain to build from source
       -- (if you are using lazy you can use gb for rebuilding a plugin if needed)
@@ -12,6 +13,13 @@ return {
       debug = {
         enabled = true, -- we expect your collaboration at least during the beta
         show_scores = true, -- to help us optimize the scoring system, feel free to share your scores!
+      },
+      layout = {
+        anchor = 'bottom',
+        height = 0.35, -- only 35% of screen height
+        width = 1.0, -- full width, like a terminal at the bottom
+        preview_position = 'right',
+        preview_size = 0.5,
       },
     },
     -- No need to lazy-load with lazy.nvim.
