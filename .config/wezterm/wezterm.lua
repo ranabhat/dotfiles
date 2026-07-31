@@ -20,27 +20,68 @@ wezterm.on("augment-command-palette", function()
 end)
 
 -- Apply bar plugin
-local bar = wezterm.plugin.require("https://github.com/adriankarlen/bar.wezterm")
-bar.apply_to_config(config, {
-	modules = {
-		cwd = {
-			enabled = false,
-		},
+-- local bar = wezterm.plugin.require("https://github.com/adriankarlen/bar.wezterm")
+-- bar.apply_to_config(config, {
+-- 	modules = {
+-- 		cwd = {
+-- 			enabled = false,
+-- 		},
+--
+-- 		hostname = {
+-- 			enabled = false,
+-- 		},
+--
+-- 		clock = {
+-- 			enabled = false,
+-- 		},
+--
+-- 		username = {
+-- 			enabled = false,
+-- 		},
+-- 	},
+-- })
 
-		hostname = {
-			enabled = false,
+-- Apply tabline plugin
+-- Alternative to bar plugin
+local tabline = wezterm.plugin.require("https://github.com/michaelbrusegard/tabline.wez")
+tabline.setup({
+	-- options = { theme = "Tokyo Night" },
+	-- options = { theme = "GruvboxDark" },
+	-- by default following theme is chosen
+	-- options = { theme = "Catppuccin Mocha" },
+	section_separators = {
+		left = wezterm.nerdfonts.pl_left_hard_divider,
+		right = wezterm.nerdfonts.pl_right_hard_divider,
+	},
+	component_separators = {
+		left = wezterm.nerdfonts.pl_left_soft_divider,
+		right = wezterm.nerdfonts.pl_right_soft_divider,
+	},
+	tab_separators = {
+		left = wezterm.nerdfonts.pl_left_hard_divider,
+		right = wezterm.nerdfonts.pl_right_hard_divider,
+	},
+	sections = {
+		tab_active = {
+			"index",
+			{ "parent", padding = 0 },
+			"/",
+			{ "cwd", padding = { left = 0, right = 1 } },
+			{ "zoomed", padding = 0 },
 		},
-
-		clock = {
-			enabled = false,
+		tab_inactive = {
+			"index",
+			{ "parent", padding = 0 },
+			"/",
+			{ "cwd", padding = { left = 0, right = 1 } },
+			-- { "zoomed", padding = 0 },
 		},
-
-		username = {
-			enabled = false,
-		},
+		tabline_x = { " " },
+		tabline_y = { "datetime", "battery" },
+		tabline_z = { "domain" },
 	},
 })
-
+tabline.apply_to_config(config)
 wezterm.on("gui-startup", function(cmd)
 	-- allow `wezterm start -- something` to affect what we spawn
 	-- in our initial window
@@ -51,22 +92,23 @@ wezterm.on("gui-startup", function(cmd)
 
 	-- Set a workspace for coding on a current project
 	-- Top pane is for the editor, bottom pane is for the build tool
-	local project_dir = wezterm.home_dir .. "/Developer"
-	local tab, build_pane, window = mux.spawn_window({
-		workspace = "coding",
-		cwd = project_dir,
-		args = args,
-	})
-	build_pane:split({
-		size = 0.3,
-		cwd = project_dir,
-	})
-	build_pane:split({
-		direction = "Top",
-		size = 0.5,
-		cwd = project_dir,
-		args = { "/opt/homebrew/bin/nvim" },
-	})
+	-- local project_dir = wezterm.home_dir .. "/Developer"
+	-- local tab, build_pane, window = mux.spawn_window({
+	-- 	workspace = "coding",
+	-- 	cwd = project_dir,
+	-- 	args = args,
+	-- })
+	-- -- build_pane:split({
+	-- -- 	size = 0.3,
+	-- -- 	cwd = project_dir,
+	-- -- })
+	-- build_pane:split({
+	-- 	direction = "Top",
+	-- 	-- size = 0.7,
+	-- 	top_level = true,
+	-- 	cwd = project_dir,
+	-- 	args = { "/opt/homebrew/bin/nvim" },
+	-- })
 	-- may as well kick off a build in that pane
 	-- build_pane:send_text 'cargo build\n'
 	-- A workspace for interacting with a local machine that
@@ -76,8 +118,19 @@ wezterm.on("gui-startup", function(cmd)
 	-- 	args = { "ssh", "taka" },
 	-- })
 
-	-- We want to startup in the coding workspace
-	mux.set_active_workspace("coding")
+	local tab, pane, window = mux.spawn_window({
+		workspace = "dev",
+		cwd = wezterm.home_dir .. "/Developer/dev-tools",
+		args = args,
+	})
+
+	pane:split({
+		direction = "Left",
+		size = 0.5,
+		cwd = wezterm.home_dir .. "/Developer/dev-tools",
+	})
+
+	mux.set_active_workspace("dev")
 end)
 
 -- General setiings
