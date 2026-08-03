@@ -54,6 +54,14 @@ if.app-name-regex-substring = 'finder'
 run = ['layout floating']
 
 [[on-window-detected]]
+if.app-name-regex-substring = 'calendar'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'messages'
+run = ['layout floating']
+
+[[on-window-detected]]
 if.app-id = 'com.github.wez.wezterm'
 run = ['move-node-to-workspace T'] #mnemonics T - Terminal
 
