@@ -55,7 +55,11 @@ local function on_attach(client, bufnr)
         require('blink.cmp').hide()
       end
 
-      vim.lsp.buf.signature_help()
+      -- vim.lsp.buf.signature_help()
+      vim.lsp.buf.signature_help {
+        border = 'rounded',
+        winhighlight = 'Normal:BlinkCmpDoc,FloatBorder:BlinkCmpDocBorder',
+      }
     end, 'Signature help', 'i')
   end
   if client:supports_method 'textDocument/documentHighlight' then
@@ -85,7 +89,8 @@ vim.diagnostic.config {
     current_line = true,
   },
   severity_sort = true,
-  float = { border = 'rounded', source = 'if_many' },
+  -- float = { border = 'rounded', source = 'if_many' },
+  float = { border = 'rounded', source = 'if_many', winhighlight = 'Normal:BlinkCmpDoc,FloatBorder:BlinkCmpDocBorder' },
   underline = { severity = vim.diagnostic.severity.ERROR },
   signs = vim.g.have_nerd_font and {
     text = {
@@ -106,6 +111,8 @@ vim.lsp.buf.hover = function()
   return hover {
     max_height = math.floor(vim.o.lines * 0.5),
     max_width = math.floor(vim.o.columns * 0.4),
+    border = 'rounded',
+    winhighlight = 'Normal:BlinkCmpDoc,FloatBorder:BlinkCmpDocBorder',
   }
 end
 -- Update mappings when registering dynamic capabilities.

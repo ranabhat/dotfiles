@@ -89,7 +89,8 @@ return {
           enabled = true,
           window = {
             show_documentation = true,
-            border = 'single',
+            border = 'rounded',
+            winhighlight = 'Normal:BlinkCmpSignatureHelp,FloatBorder:BlinkCmpSignatureHelpBorder',
           },
         },
         appearance = {
@@ -128,6 +129,7 @@ return {
           menu = {
 
             border = 'rounded',
+            winhighlight = 'Normal:BlinkCmpMenu,FloatBorder:BlinkCmpMenuBorder,CursorLine:BlinkCmpMenuSelection,Search:None',
             draw = {
               -- combined together in label by colorful-menu.nvim.
               -- columns = { { 'kind_icon', 'kind' }, { 'label', 'label_description', gap = 1 } },

@@ -14,6 +14,21 @@ return {
         styles = {
           comments = { italic = false }, -- Disable italics in comments
         },
+        on_highlights = function(hl, c)
+          -- Blink.cmp completion menu
+          hl.BlinkCmpMenu = { bg = c.bg_dark, fg = c.fg }
+          hl.BlinkCmpMenuBorder = { fg = c.blue, bg = c.bg_dark }
+          hl.BlinkCmpMenuSelection = { bg = c.bg_highlight }
+          hl.BlinkCmpLabelMatch = { fg = c.blue, bold = true }
+          hl.BlinkCmpLabelDescription = { fg = c.comment, italic = true }
+
+          -- Shared doc/hover/signature-help window
+          hl.BlinkCmpDoc = { bg = c.bg_dark, fg = c.fg }
+          hl.BlinkCmpDocBorder = { fg = c.blue, bg = c.bg_dark }
+
+          -- Fix odd inline-code highlight blocks in markdown hover popups
+          hl['@markup.raw.markdown_inline'] = { bg = 'NONE', fg = c.green }
+        end,
       }
 
       -- Load the colorscheme here.
