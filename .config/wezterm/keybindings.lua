@@ -143,6 +143,26 @@ function M.apply(config)
 			}),
 		},
 		{
+			key = "UpArrow",
+			mods = "ALT",
+      action = wezterm.action.ScrollByPage(-1),
+		},
+		{
+			key = "UpArrow",
+			mods = "SHIFT",
+      action = wezterm.action.ScrollByLine(-1),
+		},
+		{
+			key = "DownArrow",
+			mods = "ALT",
+      action = wezterm.action.ScrollByPage(1),
+		},
+		{
+			key = "DownArrow",
+			mods = "SHIFT",
+      action = wezterm.action.ScrollByLine(1),
+		},
+		{
 			key = "p",
 			mods = "ALT",
 			action = wezterm.action.ActivateKeyTable({
