@@ -114,7 +114,7 @@ function M.apply(config)
 	config.tab_bar_at_bottom = true
 
 	-- Performance settings
-	config.max_fps = 120
+	config.max_fps = 60
 	config.prefer_egl = true
 	config.native_macos_fullscreen_mode = false
 end

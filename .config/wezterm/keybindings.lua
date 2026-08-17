@@ -111,6 +111,14 @@ function M.apply(config)
 			mods = "LEADER",
 			action = wezterm.action.TogglePaneZoomState,
 		},
+		{
+			key = "k",
+			mods = "LEADER",
+			action = wezterm.action.Multiple({
+				wezterm.action.ClearScrollback("ScrollbackAndViewport"),
+				wezterm.action.SendKey({ key = "L", mods = "CTRL" }),
+			}),
+		},
 		-- spawm zabbix command line in new tab
 		-- {
 		-- 	key = "z",
@@ -141,26 +149,6 @@ function M.apply(config)
 				until_unknown = true,
 				one_shot = false,
 			}),
-		},
-		{
-			key = "UpArrow",
-			mods = "ALT",
-      action = wezterm.action.ScrollByPage(-1),
-		},
-		{
-			key = "UpArrow",
-			mods = "SHIFT",
-      action = wezterm.action.ScrollByLine(-1),
-		},
-		{
-			key = "DownArrow",
-			mods = "ALT",
-      action = wezterm.action.ScrollByPage(1),
-		},
-		{
-			key = "DownArrow",
-			mods = "SHIFT",
-      action = wezterm.action.ScrollByLine(1),
 		},
 		{
 			key = "p",
