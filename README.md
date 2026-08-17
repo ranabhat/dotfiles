@@ -2,6 +2,7 @@
 
 My macos configuration files.
 
+* [ZSH](https://zsh.sourceforge.io)
 * [Wezterm](https://github.com/wezterm/wezterm)
 * [Aerospace](https://github.com/nikitabobko/AeroSpace)
 * [fastfetch](https://github.com/fastfetch-cli/fastfetch)

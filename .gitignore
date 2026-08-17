@@ -11,3 +11,16 @@
 .config/mole/*
 .config/nvm
 .config/vortix/*
+.config/zsh/.zcomp*
+.config/zsh/.zsh_history
+.config/zsh/completions/*
+.config/zsh/plugins/*
+.config/ty/*
+.ticker.yaml
+.config/amp/*
+.config/dlv/*
+.config/fish/*
+.config/gh/*
+.config/lazydocker/*
+.config/homebrew/*
+.config/opencode/*
