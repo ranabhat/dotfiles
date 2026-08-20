@@ -24,3 +24,13 @@
 .config/lazydocker/*
 .config/homebrew/*
 .config/opencode/*
+.pi/agent/*
+!.pi/agent/package.json
+!.pi/agent/themes/
+!.pi/agent/themes/*.json
+!.pi/agent/extensions/
+!.pi/agent/extensions/**
+!.pi/agent/npm/
+!.pi/agent/npm/.gitignore
+!.pi/agent/npm/package.json
+!.pi/agent/npm/package-lock.json

@@ -1,0 +1,8 @@
+{
+  "name": "pi-extensions",
+  "private": true,
+  "dependencies": {
+    "pi-powerline-footer": "^0.15.1",
+    "pi-vimmode": "^0.9.0"
+  }
+}
