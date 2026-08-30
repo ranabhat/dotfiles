@@ -120,15 +120,15 @@ wezterm.on("gui-startup", function(cmd)
 
 	local tab, pane, window = mux.spawn_window({
 		workspace = "dev",
-		cwd = wezterm.home_dir .. "/Developer/dev-tools",
+		cwd = wezterm.home_dir .. "/Developer",
 		args = args,
 	})
 
-	pane:split({
-		direction = "Left",
-		size = 0.5,
-		cwd = wezterm.home_dir .. "/Developer/dev-tools",
-	})
+	-- pane:split({
+	-- 	direction = "Left",
+	-- 	size = 0.5,
+	-- 	cwd = wezterm.home_dir .. "/Developer/dev-tools",
+	-- })
 
 	mux.set_active_workspace("dev")
 end)
@@ -140,6 +140,7 @@ config.underline_position = -6
 config.automatically_reload_config = true
 config.initial_cols = 120
 config.initial_rows = 28
+config.scrollback_lines = 2500
 config.adjust_window_size_when_changing_font_size = false
 config.quick_select_remove_styling = true
 config.quick_select_patterns = {

@@ -102,6 +102,11 @@ function M.apply(config)
 			action = wezterm.action.ActivateCommandPalette,
 		},
 		{
+			key = "s",
+			mods = "LEADER",
+			action = wezterm.action.SendString 'brew services restart sketchybar'
+		},
+		{
 			key = "a",
 			mods = "LEADER|CTRL",
 			action = wezterm.action.SendKey({ key = "a", mods = "CTRL" }),
