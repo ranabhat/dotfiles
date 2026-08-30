@@ -85,10 +85,19 @@ local function on_attach(client, bufnr)
 end
 
 vim.diagnostic.config {
-  virtual_lines = {
-    current_line = true,
+  -- virtual_lines = {
+  --   current_line = true,
+  --   severity = { min = vim.diagnostic.severity.ERROR },
+  -- },
+  virtual_text = {
+    prefix = '●',
+    source = 'if_many',
+    -- current_line = true,
+    -- Only show the highest-severity diagnostic on the line
+    severity = { min = vim.diagnostic.severity.ERROR },
   },
   severity_sort = true,
+  virtual_lines = false,
   -- float = { border = 'rounded', source = 'if_many' },
   float = { border = 'rounded', source = 'if_many', winhighlight = 'Normal:BlinkCmpDoc,FloatBorder:BlinkCmpDocBorder' },
   underline = { severity = vim.diagnostic.severity.ERROR },

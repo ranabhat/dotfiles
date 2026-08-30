@@ -111,7 +111,7 @@ return {
           },
         },
         keymap = {
-          ['<C-f>'] = {},
+          ['<C-f>'] = { 'scroll_documentation_down', 'fallback' },
         },
         cmdline = {
           enabled = false,
@@ -205,7 +205,7 @@ return {
           documentation = {
             window = {
               border = 'rounded',
-              scrollbar = false,
+              scrollbar = true,
               winhighlight = 'Normal:BlinkCmpDoc,FloatBorder:BlinkCmpDocBorder,EndOfBuffer:BlinkCmpDoc',
             },
             auto_show = true,
