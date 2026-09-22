@@ -1,7 +1,7 @@
 command -v lazydocker >/dev/null 2>&1 && alias lzd='lazydocker'
 
 alias l='ls -Alh'
-alias rev='git rev-parse HEAD'
+alias revi='git rev-parse HEAD'
 alias src='source "$ZDOTDIR/.zshrc"'
 alias npmlist='npm list -g --depth=0'
 

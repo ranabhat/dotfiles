@@ -2,7 +2,11 @@
 
 local wezterm = require("wezterm")
 local home = os.getenv("HOME")
-
+local function send_cmd_to_panes(panes)
+	for _, p in pairs(panes) do
+		p:send_text("n")
+	end
+end
 local M = {}
 -- Show which key table is active in the status area
 -- wezterm.on("update-right-status", function(window, _)
@@ -104,7 +108,15 @@ function M.apply(config)
 		{
 			key = "s",
 			mods = "LEADER",
-			action = wezterm.action.SendString 'brew services restart sketchybar'
+			action = wezterm.action.SendString("brew services restart sketchybar"),
+		},
+		{
+			key = "z",
+			mods = "LEADER",
+			action = wezterm.action_callback(function(window)
+				local tab = window:active_tab()
+				send_cmd_to_panes(tab:panes())
+			end),
 		},
 		{
 			key = "a",

@@ -5,6 +5,7 @@ local home = os.getenv("HOME")
 local mux = wezterm.mux
 
 local config = wezterm.config_builder()
+local gpus = wezterm.gui.enumerate_gpus()
 wezterm.log_info("reloading")
 -- Import modular configuartion files
 local appearance = require("appearance")
@@ -143,6 +144,11 @@ config.initial_rows = 28
 config.scrollback_lines = 2500
 config.adjust_window_size_when_changing_font_size = false
 config.quick_select_remove_styling = true
+config.webgpu_preferred_adapter = gpus[1]
+config.front_end = "WebGpu"
+config.animation_fps = 1
+config.cursor_blink_ease_in = "Constant"
+config.cursor_blink_ease_out = "Constant"
 config.quick_select_patterns = {
 	-- match things that look like sha1 hashes
 	-- (this is actually one of the default patterns)
